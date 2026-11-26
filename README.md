@@ -6,6 +6,8 @@ The repository includes [Render Blueprint configuration](render.yaml) for one Do
 
 The free Render Key Value plan does not persist Redis data after restart. PostgreSQL preserves investigations, and the app's queue reconciliation rebuilds unfinished jobs. A paid Key Value instance is recommended if the demo receives regular traffic. The web service and worker currently run together in one container, which suits a small portfolio demo. Watch the API health check and Gemini quotas after deployment.
 
+After setting `GEMINI_API_KEY` on Render, run `VERITY_TEST_URL=https://your-service.onrender.com node scripts/check-hosted.mjs` to check planning, hosted embeddings, evidence review, and a cited report with synthetic input. The check creates one guest investigation in the hosted database.
+
 Verity investigates a claim using scholarly sources and optional PDFs. A model proposes editable research questions. A durable worker retrieves source material, builds a hybrid search index, classifies passages, checks citations, and writes a source-linked report. Open **New investigation** to run the pipeline. The introductory TypeScript example is curated.
 
 ## Local development
