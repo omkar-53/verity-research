@@ -27,7 +27,7 @@ Check the container at [Verity](http://127.0.0.1:4173/) or poll `GET /api/health
 
 ## Providers and evidence
 
-Local mode uses Ollama for generation and embedding. To use Google's hosted Gemini API for both generation and retrieval embeddings, set `AI_PROVIDER=gemini`, `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.8-flash` and `EMBEDDING_MODEL=gemini-embedding-001` on the server. The configured provider receives the claim and selected passage text, including selected text from uploads. OpenAlex and Crossref receive the scholarly search query. Optional provider settings are in `.env.example`.
+Local mode uses Ollama for generation and embedding. To use Google's hosted Gemini API for both generation and retrieval embeddings, set `AI_PROVIDER=gemini`, `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.5-flash-lite` and `EMBEDDING_MODEL=gemini-embedding-001` on the server. The configured provider receives the claim and selected passage text, including selected text from uploads. OpenAlex and Crossref receive the scholarly search query. Optional provider settings are in `.env.example`.
 
 To include Google Scholar in online investigations, set `SERPAPI_API_KEY` in the server's `.env`. Restart the development server, or run `docker compose --profile app up -d app` for the containerized app. SerpApi receives the scholarly search terms. The worker combines Scholar titles and links with OpenAlex and Crossref results, looks up available abstracts by DOI, and retrieves supported open full text. Reports cite passages from retrieved abstracts, full text or uploads. [SerpApi Google Scholar API](https://serpapi.com/google-scholar-api)
 

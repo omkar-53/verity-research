@@ -31,7 +31,7 @@ export function aiClient(env, recordUsage = async () => {}) {
   const metrics = { calls: 0, inputTokens: 0, outputTokens: 0 };
   const local = (env.OLLAMA_URL || 'http://127.0.0.1:11434').replace(/\/$/, '');
   const gemini = env.AI_PROVIDER === 'gemini' || (!env.AI_PROVIDER && !!env.GEMINI_API_KEY);
-  const model = gemini ? env.GEMINI_MODEL || 'gemini-3.8-flash' : env.OLLAMA_MODEL || 'gemma4:12b-mlx';
+  const model = gemini ? env.GEMINI_MODEL || 'gemini-3.5-flash-lite' : env.OLLAMA_MODEL || 'gemma4:12b-mlx';
   const embeddingModel = env.EMBEDDING_MODEL || (gemini ? 'gemini-embedding-001' : 'all-minilm');
   const provider = gemini ? 'Gemini' : 'Ollama';
 
