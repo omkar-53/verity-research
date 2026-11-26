@@ -1,0 +1,43 @@
+name: verity-research
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: verity
+      POSTGRES_DB: verity
+      POSTGRES_PASSWORD: ${VERITY_DB_PASSWORD:?Set VERITY_DB_PASSWORD in .env}
+    ports: ["127.0.0.1:55439:5432"]
+    volumes: [research-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verity"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${VERITY_REDIS_PASSWORD:?Set VERITY_REDIS_PASSWORD in .env}"]
+    ports: ["127.0.0.1:56389:6379"]
+    volumes: [research-queue:/data]
+  app:
+    profiles: ["app"]
+    build: .
+    stop_grace_period: 45s
+    ports: ["127.0.0.1:4173:4173"]
+    volumes: ["./evaluation:/app/evaluation:ro"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://verity:${VERITY_DB_PASSWORD}@db:5432/verity
+      REDIS_URL: redis://:${VERITY_REDIS_PASSWORD}@redis:6379
+      OLLAMA_URL: http://host.docker.internal:11434
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_started}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/api/health',{signal:AbortSignal.timeout(3000)}).then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+volumes:
+  research-db:
+  research-queue:

@@ -1,0 +1,176 @@
+{
+  "cases": 10,
+  "classificationCases": 0,
+  "dataset": "SciFact development subset reranking comparison",
+  "model": "gemma4:12b-mlx",
+  "embeddingModel": "all-minilm",
+  "date": "2026-11-19T19:54:56.515Z",
+  "metrics": {
+    "Hybrid recall@3": 1,
+    "Reranked recall@3": 1,
+    "Model reranking completion": 1
+  },
+  "observations": [
+    {
+      "id": "scifact-636-24294572",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-636-24294572",
+        "scifact-216-21366394",
+        "scifact-1241-4427392"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-636-24294572",
+        "scifact-216-21366394",
+        "scifact-1241-4427392"
+      ]
+    },
+    {
+      "id": "scifact-51-45638119",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-51-45638119",
+        "scifact-179-16322674",
+        "scifact-1221-19736671"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-51-45638119",
+        "scifact-179-16322674",
+        "scifact-1221-19736671"
+      ]
+    },
+    {
+      "id": "scifact-327-17997584",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-327-17997584",
+        "scifact-781-24338780",
+        "scifact-380-19005293"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-327-17997584",
+        "scifact-781-24338780",
+        "scifact-380-19005293"
+      ]
+    },
+    {
+      "id": "scifact-1110-13770184",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1110-13770184",
+        "scifact-327-17997584",
+        "scifact-1370-2425364"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-1110-13770184",
+        "scifact-1144-10071552",
+        "scifact-882-14803797"
+      ]
+    },
+    {
+      "id": "scifact-549-9433958",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-549-9433958",
+        "scifact-1180-31272411",
+        "scifact-743-32159283"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-549-9433958",
+        "scifact-1180-31272411",
+        "scifact-743-32159283"
+      ]
+    },
+    {
+      "id": "scifact-1370-2425364",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-179-16322674",
+        "scifact-873-1180972",
+        "scifact-1370-2425364"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-1370-2425364",
+        "scifact-179-16322674",
+        "scifact-873-1180972"
+      ]
+    },
+    {
+      "id": "scifact-723-5531479",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-723-5531479",
+        "scifact-1216-24142891",
+        "scifact-50-12580014"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-723-5531479",
+        "scifact-1216-24142891",
+        "scifact-50-12580014"
+      ]
+    },
+    {
+      "id": "scifact-1049-12486491",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1241-4427392",
+        "scifact-1049-12486491",
+        "scifact-327-17997584"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-1049-12486491",
+        "scifact-1241-4427392",
+        "scifact-327-17997584"
+      ]
+    },
+    {
+      "id": "scifact-1086-39281140",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1086-39281140",
+        "scifact-636-24294572",
+        "scifact-743-32159283"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-1086-39281140",
+        "scifact-636-24294572",
+        "scifact-743-32159283"
+      ]
+    },
+    {
+      "id": "scifact-743-32159283",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-743-32159283",
+        "scifact-723-5531479",
+        "scifact-327-17997584"
+      ],
+      "reranking": "model",
+      "reranked": [
+        "scifact-743-32159283",
+        "scifact-723-5531479",
+        "scifact-327-17997584"
+      ]
+    }
+  ],
+  "candidatePool": 50
+}

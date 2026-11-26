@@ -1,0 +1,561 @@
+{
+  "cases": 50,
+  "classificationCases": 10,
+  "dataset": "SciFact development subset",
+  "model": "gemma4:12b-mlx",
+  "embeddingModel": "all-minilm",
+  "date": "2026-11-19T19:15:42.075Z",
+  "metrics": {
+    "Retrieval recall@3": 0.92,
+    "Retrieval precision@3": 0.30666666666666664,
+    "Stance agreement on supplied passages": 0.7,
+    "Exact quote rate": 1,
+    "Abstention on irrelevant material": null
+  },
+  "observations": [
+    {
+      "id": "scifact-636-24294572",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-636-24294572",
+        "scifact-216-21366394",
+        "scifact-1241-4427392"
+      ],
+      "expected": "supports",
+      "returned": [
+        "supports"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-51-45638119",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-51-45638119",
+        "scifact-179-16322674",
+        "scifact-1221-19736671"
+      ],
+      "expected": "contradicts",
+      "returned": [],
+      "grounded": 0
+    },
+    {
+      "id": "scifact-327-17997584",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-327-17997584",
+        "scifact-781-24338780",
+        "scifact-380-19005293"
+      ],
+      "expected": "supports",
+      "returned": [
+        "supports"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-1110-13770184",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1110-13770184",
+        "scifact-327-17997584",
+        "scifact-1370-2425364"
+      ],
+      "expected": "contradicts",
+      "returned": [],
+      "grounded": 0
+    },
+    {
+      "id": "scifact-549-9433958",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-549-9433958",
+        "scifact-1180-31272411",
+        "scifact-743-32159283"
+      ],
+      "expected": "supports",
+      "returned": [
+        "supports"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-1370-2425364",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-179-16322674",
+        "scifact-873-1180972",
+        "scifact-1370-2425364"
+      ],
+      "expected": "contradicts",
+      "returned": [
+        "contradicts"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-723-5531479",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-723-5531479",
+        "scifact-1216-24142891",
+        "scifact-50-12580014"
+      ],
+      "expected": "supports",
+      "returned": [
+        "supports"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-1049-12486491",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1241-4427392",
+        "scifact-1049-12486491",
+        "scifact-327-17997584"
+      ],
+      "expected": "contradicts",
+      "returned": [],
+      "grounded": 0
+    },
+    {
+      "id": "scifact-1086-39281140",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1086-39281140",
+        "scifact-636-24294572",
+        "scifact-743-32159283"
+      ],
+      "expected": "supports",
+      "returned": [
+        "supports"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-743-32159283",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-743-32159283",
+        "scifact-723-5531479",
+        "scifact-327-17997584"
+      ],
+      "expected": "contradicts",
+      "returned": [
+        "contradicts"
+      ],
+      "grounded": 1
+    },
+    {
+      "id": "scifact-431-28937856",
+      "relevant": 1,
+      "hit": 0,
+      "retrieved": [
+        "scifact-549-9433958",
+        "scifact-54-49556906",
+        "scifact-636-24294572"
+      ]
+    },
+    {
+      "id": "scifact-216-21366394",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-216-21366394",
+        "scifact-1150-11369420",
+        "scifact-385-9955779"
+      ]
+    },
+    {
+      "id": "scifact-146-10582939",
+      "relevant": 1,
+      "hit": 0,
+      "retrieved": [
+        "scifact-1241-4427392",
+        "scifact-171-12670680",
+        "scifact-1336-27910499"
+      ]
+    },
+    {
+      "id": "scifact-859-1982286",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-859-1982286",
+        "scifact-216-21366394",
+        "scifact-51-45638119"
+      ]
+    },
+    {
+      "id": "scifact-1146-13906581",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1146-13906581",
+        "scifact-130-27768226",
+        "scifact-1370-2425364"
+      ]
+    },
+    {
+      "id": "scifact-847-16787954",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-847-16787954",
+        "scifact-386-16495649",
+        "scifact-743-32159283"
+      ]
+    },
+    {
+      "id": "scifact-49-5953485",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-49-5953485",
+        "scifact-1216-24142891",
+        "scifact-549-9433958"
+      ]
+    },
+    {
+      "id": "scifact-882-14803797",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-882-14803797",
+        "scifact-1110-13770184",
+        "scifact-1221-19736671"
+      ]
+    },
+    {
+      "id": "scifact-1150-11369420",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1150-11369420",
+        "scifact-636-24294572",
+        "scifact-327-17997584"
+      ]
+    },
+    {
+      "id": "scifact-793-8551160",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-431-28937856",
+        "scifact-793-8551160",
+        "scifact-54-49556906"
+      ]
+    },
+    {
+      "id": "scifact-399-791050",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1110-13770184",
+        "scifact-399-791050",
+        "scifact-1144-10071552"
+      ]
+    },
+    {
+      "id": "scifact-171-12670680",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-171-12670680",
+        "scifact-723-5531479",
+        "scifact-327-17997584"
+      ]
+    },
+    {
+      "id": "scifact-501-17930286",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-501-17930286",
+        "scifact-743-32159283",
+        "scifact-1370-2425364"
+      ]
+    },
+    {
+      "id": "scifact-781-24338780",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-781-24338780",
+        "scifact-171-12670680",
+        "scifact-549-9433958"
+      ]
+    },
+    {
+      "id": "scifact-385-9955779",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-385-9955779",
+        "scifact-1150-11369420",
+        "scifact-1180-31272411"
+      ]
+    },
+    {
+      "id": "scifact-115-33872649",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-115-33872649",
+        "scifact-743-32159283",
+        "scifact-327-17997584"
+      ]
+    },
+    {
+      "id": "scifact-436-14637235",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-436-14637235",
+        "scifact-431-28937856",
+        "scifact-50-12580014"
+      ]
+    },
+    {
+      "id": "scifact-1144-10071552",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1144-10071552",
+        "scifact-501-17930286",
+        "scifact-743-32159283"
+      ]
+    },
+    {
+      "id": "scifact-386-16495649",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-386-16495649",
+        "scifact-1262-44172171",
+        "scifact-399-791050"
+      ]
+    },
+    {
+      "id": "scifact-54-49556906",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-54-49556906",
+        "scifact-216-21366394",
+        "scifact-380-19005293"
+      ]
+    },
+    {
+      "id": "scifact-1012-9745001",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1012-9745001",
+        "scifact-1339-15482274",
+        "scifact-636-24294572"
+      ]
+    },
+    {
+      "id": "scifact-513-13230773",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1110-13770184",
+        "scifact-516-29564505",
+        "scifact-513-13230773"
+      ]
+    },
+    {
+      "id": "scifact-1262-44172171",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1262-44172171",
+        "scifact-859-1982286",
+        "scifact-431-28937856"
+      ]
+    },
+    {
+      "id": "scifact-1336-27910499",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1336-27910499",
+        "scifact-385-9955779",
+        "scifact-216-21366394"
+      ]
+    },
+    {
+      "id": "scifact-1241-4427392",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1241-4427392",
+        "scifact-781-24338780",
+        "scifact-1049-12486491"
+      ]
+    },
+    {
+      "id": "scifact-993-16472469",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-993-16472469",
+        "scifact-636-24294572",
+        "scifact-1221-19736671"
+      ]
+    },
+    {
+      "id": "scifact-50-12580014",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-50-12580014",
+        "scifact-51-45638119",
+        "scifact-859-1982286"
+      ]
+    },
+    {
+      "id": "scifact-1339-15482274",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1339-15482274",
+        "scifact-146-10582939",
+        "scifact-1086-39281140"
+      ]
+    },
+    {
+      "id": "scifact-380-19005293",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-380-19005293",
+        "scifact-54-49556906",
+        "scifact-216-21366394"
+      ]
+    },
+    {
+      "id": "scifact-1221-19736671",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-859-1982286",
+        "scifact-1221-19736671",
+        "scifact-385-9955779"
+      ]
+    },
+    {
+      "id": "scifact-1216-24142891",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1216-24142891",
+        "scifact-385-9955779",
+        "scifact-216-21366394"
+      ]
+    },
+    {
+      "id": "scifact-873-1180972",
+      "relevant": 1,
+      "hit": 0,
+      "retrieved": [
+        "scifact-513-13230773",
+        "scifact-1110-13770184",
+        "scifact-1241-4427392"
+      ]
+    },
+    {
+      "id": "scifact-1180-31272411",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1180-31272411",
+        "scifact-49-5953485",
+        "scifact-549-9433958"
+      ]
+    },
+    {
+      "id": "scifact-516-29564505",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-516-29564505",
+        "scifact-1110-13770184",
+        "scifact-513-13230773"
+      ]
+    },
+    {
+      "id": "scifact-141-14437255",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-141-14437255",
+        "scifact-549-9433958",
+        "scifact-1049-12486491"
+      ]
+    },
+    {
+      "id": "scifact-1382-17755060",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-1382-17755060",
+        "scifact-54-49556906",
+        "scifact-793-8551160"
+      ]
+    },
+    {
+      "id": "scifact-179-16322674",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-179-16322674",
+        "scifact-873-1180972",
+        "scifact-51-45638119"
+      ]
+    },
+    {
+      "id": "scifact-692-24088502",
+      "relevant": 1,
+      "hit": 0,
+      "retrieved": [
+        "scifact-1336-27910499",
+        "scifact-327-17997584",
+        "scifact-1241-4427392"
+      ]
+    },
+    {
+      "id": "scifact-130-27768226",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-130-27768226",
+        "scifact-1110-13770184",
+        "scifact-1180-31272411"
+      ]
+    },
+    {
+      "id": "scifact-879-8426046",
+      "relevant": 1,
+      "hit": 1,
+      "retrieved": [
+        "scifact-879-8426046",
+        "scifact-1049-12486491",
+        "scifact-781-24338780"
+      ]
+    }
+  ]
+}
