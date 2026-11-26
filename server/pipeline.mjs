@@ -231,10 +231,11 @@ export async function pipeline({ db, jobId, plan, uploads, env, stage, ai = aiCl
   // Round-robin source coverage before applying the run's embedding budget.
   const groups = sources.map((s) => rows.filter((row) => row.source.id === s.id));
   const selected = [];
-  for (let i = 0; selected.length < 160 && groups.some((g) => i < g.length); i++)
-    for (const group of groups) if (group[i] && selected.length < 160) selected.push(group[i]);
+  const passageLimit = ai.provider === 'Gemini' ? 80 : 160;
+  for (let i = 0; selected.length < passageLimit && groups.some((g) => i < g.length); i++)
+    for (const group of groups) if (group[i] && selected.length < passageLimit) selected.push(group[i]);
   if (rows.length > selected.length)
-    warnings.push('Passage indexing capped at 160 chunks across the retrieved sources.');
+    warnings.push('Passage indexing capped at ' + passageLimit + ' chunks across the retrieved sources.');
   const metadata = sources.filter((s) => s.access === 'metadata').length;
   if (metadata) warnings.push(metadata + ' publications provided metadata only.');
   const archive = selected.map((p, i) => ({
