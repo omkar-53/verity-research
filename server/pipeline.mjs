@@ -149,6 +149,26 @@ export async function rankChunks(db, jobId, archive, queryVectors, queries, limi
     .slice(0, limit);
 }
 
+export function rankTextChunks(archive, queries, limit = 14) {
+  const terms = [...new Set(queries.join(' ').toLowerCase().match(/[a-z]{4,}/g) || [])]
+    .filter((word) => !['does', 'what', 'with', 'from', 'than', 'this', 'that', 'were', 'have', 'compared'].includes(word));
+  const perSource = new Map();
+  return [...archive]
+    .map((passage) => {
+      const content = passage.content.toLowerCase();
+      const title = passage.title.toLowerCase();
+      return { passage, score: terms.reduce((score, word) => score + (content.includes(word) ? 1 : 0) + (title.includes(word) ? 0.35 : 0), 0) };
+    })
+    .sort((a, b) => b.score - a.score || a.passage.id - b.passage.id)
+    .map(({ passage }) => passage)
+    .filter((passage) => {
+      const seen = perSource.get(passage.source_id) || 0;
+      perSource.set(passage.source_id, seen + 1);
+      return seen < 3;
+    })
+    .slice(0, limit);
+}
+
 export async function rerankChunks(ai, plan, candidates, warnings) {
   if (candidates.length <= 1) return { passages: candidates, method: 'hybrid' };
   const byId = new Map(candidates.map((passage) => [passage.id, passage]));
@@ -247,7 +267,13 @@ export async function pipeline({ db, jobId, plan, uploads, env, stage, ai = aiCl
   }));
   let candidates = [];
   if (archive.length) {
-    const vectors = await ai.embed([...archive.map((p) => p.content), plan.claim, ...plan.questions]);
+    let vectors;
+    try {
+      vectors = await ai.embed([...archive.map((p) => p.content), plan.claim, ...plan.questions]);
+    } catch (error) {
+      if (!/Embedding request failed \(HTTP (?:429|503)\)/.test(error.message)) throw error;
+      warnings.push('Embedding quota or capacity was unavailable. Passages were ranked by text and then model relevance.');
+    }
     for (const row of archive)
       await db.query(
         'INSERT INTO chunks(job,id,source_id,title,location,content,embedding) VALUES($1,$2,$3,$4,$5,$6,$7::vector) ON CONFLICT(job,id) DO UPDATE SET source_id=excluded.source_id,title=excluded.title,location=excluded.location,content=excluded.content,embedding=excluded.embedding',
@@ -258,13 +284,12 @@ export async function pipeline({ db, jobId, plan, uploads, env, stage, ai = aiCl
           row.title,
           row.location,
           row.content,
-          JSON.stringify(vectors[row.id - 1]),
+          vectors ? JSON.stringify(vectors[row.id - 1]) : null,
         ],
       );
-    candidates = await rankChunks(db, jobId, archive, vectors.slice(archive.length), [
-      plan.claim,
-      ...plan.questions,
-    ], 14);
+    candidates = vectors ? await rankChunks(db, jobId, archive, vectors.slice(archive.length), [
+      plan.claim, ...plan.questions,
+    ], 14) : rankTextChunks(archive, [plan.claim, ...plan.questions]);
   }
   if (candidates.length > 1) await stage('reading', 'Reranking retrieved passages');
   const { passages: ranked, method: ranking } = await rerankChunks(ai, plan, candidates, warnings);

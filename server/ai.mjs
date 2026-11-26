@@ -118,16 +118,23 @@ export function aiClient(env, recordUsage = async () => {}) {
     for (let start = 0; start < inputs.length; start += 24) {
       const batch = inputs.slice(start, start + 24);
       const hostedEmbeddings = gemini && env.EMBEDDING_PROVIDER !== 'ollama';
-      const response = await fetch(hostedEmbeddings
-        ? 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(embeddingModel) + ':batchEmbedContents'
-        : local + '/api/embed', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(hostedEmbeddings ? { 'x-goog-api-key': env.GEMINI_API_KEY } : {}) },
-        body: JSON.stringify(hostedEmbeddings ? {
-          requests: batch.map((item) => ({ model: 'models/' + embeddingModel, content: { parts: [{ text: item }] }, outputDimensionality: 768 })),
-        } : { model: embeddingModel, input: batch }),
-        signal: AbortSignal.timeout(90000),
-      });
+      let response;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        response = await fetch(hostedEmbeddings
+          ? 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(embeddingModel) + ':batchEmbedContents'
+          : local + '/api/embed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(hostedEmbeddings ? { 'x-goog-api-key': env.GEMINI_API_KEY } : {}) },
+          body: JSON.stringify(hostedEmbeddings ? {
+            requests: batch.map((item) => ({ model: 'models/' + embeddingModel, content: { parts: [{ text: item }] }, outputDimensionality: 768 })),
+          } : { model: embeddingModel, input: batch }),
+          signal: AbortSignal.timeout(90000),
+        });
+        if (response.ok || !hostedEmbeddings || ![429, 503].includes(response.status) || attempt === 1) break;
+        const retrySeconds = Number(response.headers.get('retry-after'));
+        const delay = response.status === 429 ? Math.min(30_000, Math.max(10_000, retrySeconds * 1000 || 20_000)) : 2000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
       if (!response.ok)
         throw Error('Embedding request failed (HTTP ' + response.status + '). Check the embedding model and quota.');
       const data = await response.json();

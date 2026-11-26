@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { aiClient } from '../server/ai.mjs';
-import { rerankChunks, verifiedFindings } from '../server/pipeline.mjs';
+import { rankTextChunks, rerankChunks, verifiedFindings } from '../server/pipeline.mjs';
 import { modelUsage, summarizeUsage } from '../server/usage.mjs';
 
 const plan = {
@@ -10,6 +10,15 @@ const plan = {
 };
 const result = 'The observed median build time was identical in both groups.';
 const passage = { id: 5, source_id: 's1', title: 'Build study', location: 'Results', content: result };
+
+test('text retrieval keeps relevant passages available when embeddings are limited', () => {
+  const archive = [
+    { id: 1, source_id: 'a', title: 'Unrelated paper', content: 'A study of coffee production.' },
+    { id: 2, source_id: 'b', title: 'Pair programming study', content: 'Pair programming reduced code defects compared with solo programming.' },
+    { id: 3, source_id: 'b', title: 'Pair programming study', content: 'Developers worked in pairs.' },
+  ];
+  assert.deepEqual(rankTextChunks(archive, ['Does pair programming improve code quality compared with solo programming?']).map(({ id }) => id), [2, 3, 1]);
+});
 
 test('reranking uses known candidate IDs and retains hybrid order for omitted passages', async () => {
   const candidates = [passage, { ...passage, id: 6 }, { ...passage, id: 7 }];
