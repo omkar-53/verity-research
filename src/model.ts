@@ -207,7 +207,11 @@ export function getSummary(session: Session): Statement[] {
   if (session.evidence.length) {
     return [{ text: 'The search surfaced candidate passages for review. There is insufficient reviewed evidence to assess the claim.' }];
   }
-  return [{ text: 'No matching passages were available in the retrieved material. There is insufficient evidence to assess the claim.' }];
+  if (session.analysis?.indexed) {
+    const incomplete = session.warnings.some((warning) => warning.includes('was unavailable'));
+    return [{ text: `${session.analysis.indexed} source passages were checked, but no finding passed citation review.${incomplete ? ' A scholarly search provider was unavailable, so coverage is incomplete.' : ' The available passages do not establish the claim.'}` }];
+  }
+  return [{ text: 'No usable source passages were retrieved. There is insufficient evidence to assess the claim.' }];
 }
 
 export function makeMarkdown(session: Session) {

@@ -76,7 +76,7 @@ export function Report({ session, onReview }: {
           </button>;
         })}
       </div>
-      {counts[filter] === 0 && <div className="empty-state"><Layers3 size={24} /><h3>No {filter === 'all' ? '' : stanceLabels[filter].toLowerCase() + ' '}passages</h3><p>{counts.all ? 'Choose another filter to explore related passages.' : 'This investigation did not retrieve any matching passages.'}</p></div>}
+      {counts[filter] === 0 && <div className="empty-state"><Layers3 size={24} /><h3>No {filter === 'all' ? 'verified findings' : stanceLabels[filter].toLowerCase() + ' findings'}</h3><p>{counts.all ? 'Choose another filter to explore related findings.' : session.analysis?.indexed ? `${session.analysis.indexed} passages were retrieved, but none passed citation review.` : 'This investigation did not retrieve usable source passages.'}</p></div>}
     </section>
   );
 

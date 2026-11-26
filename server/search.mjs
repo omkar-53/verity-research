@@ -36,11 +36,24 @@ function normalizeDoi(doi) {
   return doi?.replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '').toLowerCase();
 }
 
+async function searchFetch(url, options = {}) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await fetch(url, { ...options, signal: AbortSignal.timeout(12_000) });
+      if (response.ok || ![429, 500, 502, 503, 504].includes(response.status) || attempt === 2)
+        return response;
+    } catch (error) {
+      if (attempt === 2) throw error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** attempt));
+  }
+}
+
 async function openAlexWorks(params, env) {
   const url = new URL('https://api.openalex.org/works');
   url.search = new URLSearchParams({ ...params, 'per-page': '12', select: openAlexFields });
   const headers = env.OPENALEX_API_KEY ? { Authorization: 'Bearer ' + env.OPENALEX_API_KEY } : {};
-  const response = await fetch(url, { headers, signal: AbortSignal.timeout(12_000) });
+  const response = await searchFetch(url, { headers });
   if (!response.ok) throw new Error('OpenAlex returned ' + response.status);
   const data = await response.json();
   return data.results.map((work) => ({
@@ -75,7 +88,7 @@ export async function crossref(query, env) {
     select: 'DOI,title,abstract,author,published,container-title,type',
   });
   if (env.CROSSREF_MAILTO) url.searchParams.set('mailto', env.CROSSREF_MAILTO);
-  const response = await fetch(url, { signal: AbortSignal.timeout(12_000) });
+  const response = await searchFetch(url);
   if (!response.ok) throw new Error('Crossref returned ' + response.status);
   const data = await response.json();
   return data.message.items.map((work) => ({

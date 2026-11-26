@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { Readable } from 'node:stream';
-import { createResearchHandler, discover, googleScholar, mergeSources } from '../server/search.mjs';
+import { createResearchHandler, discover, googleScholar, mergeSources, openAlex } from '../server/search.mjs';
 import { createPlan, extractEvidence, getAssessment, getSummary, makeMarkdown } from '../src/model.ts';
 import { example } from '../src/example.ts';
 
@@ -54,6 +54,24 @@ test('partial provider failure preserves available results with coverage notes',
   const res = await searchResponse({ openAlex: unavailable, crossref: async () => [] }, 'test');
   assert.equal(res.status, 200);
   assert.match(res.body.warnings[0], /OpenAlex/);
+});
+
+test('a transient OpenAlex outage retries and retains usable abstracts', async (t) => {
+  let requests = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    requests++;
+    if (requests === 1) return Response.json({}, { status: 503 });
+    return Response.json({ results: [{ id: 'https://openalex.org/W1', title: 'Controlled trial', abstract_inverted_index: { Quality: [0], improved: [1] } }] });
+  });
+  const works = await openAlex('pair programming quality', {});
+  assert.equal(requests, 2);
+  assert.equal(works[0].abstract, 'Quality improved');
+});
+
+test('an abstaining report describes checked passages and provider gaps accurately', () => {
+  const session = { ...createPlan('Does pair programming improve code quality?'), example: false, summary: [], evidence: [], sources: [], analysis: { indexed: 8 }, warnings: ['OpenAlex was unavailable.'] };
+  assert.match(getSummary(session)[0].text, /8 source passages were checked/);
+  assert.match(getSummary(session)[0].text, /coverage is incomplete/);
 });
 
 test('a provider outage is distinguishable from an empty search and bad input', async () => {
