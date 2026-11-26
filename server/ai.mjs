@@ -75,12 +75,21 @@ export function aiClient(env, recordUsage = async () => {}) {
             ],
             options: { temperature: 0, num_ctx: 8192, num_predict: 1900 },
           };
-      const response = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-        signal: AbortSignal.timeout(timeout),
-      });
+      let response;
+      for (let request = 0; request < 3; request++) {
+        response = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(timeout),
+        });
+        if (response.ok || !gemini || ![429, 503].includes(response.status) || request === 2) break;
+        const retrySeconds = Number(response.headers.get('retry-after'));
+        const delay = response.status === 429
+          ? Math.min(30_000, Math.max(10_000, retrySeconds * 1000 || 20_000))
+          : 1500 * (request + 1);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
       if (!response.ok)
         throw Error(
           'The ' +

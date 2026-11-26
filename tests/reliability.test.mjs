@@ -104,3 +104,20 @@ test('Gemini hosted mode embeds passages without an Ollama request', async (t) =
   assert.equal(calls[0].options.headers['x-goog-api-key'], 'test-key');
   assert.equal(JSON.parse(calls[0].options.body).requests.length, 2);
 });
+
+test('Gemini generation retries a transient 503 before accepting a valid plan', async (t) => {
+  let requests = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    requests++;
+    if (requests === 1) return new Response('', { status: 503 });
+    return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify({
+      refinement: '',
+      scope: { subject: 'pair programming', comparison: 'solo programming', outcome: 'code quality', population: 'developers', claimType: 'comparison' },
+      query: 'pair programming solo programming code quality',
+      questions: ['Does pairing improve code quality?'],
+    }) }] } }] });
+  });
+  const plan = await aiClient({ AI_PROVIDER: 'gemini', GEMINI_API_KEY: 'test-key' }).plan('Does pairing improve code quality?');
+  assert.equal(requests, 2);
+  assert.match(plan.query, /pair programming/);
+});
