@@ -61,7 +61,7 @@ test('source instructions stay in untrusted input and a contradicted finding is 
   t.mock.method(globalThis, 'fetch', async (_url, options) => {
     const request = JSON.parse(options.body);
     calls.push(request);
-    const response = calls.length === 1
+    const response = calls.length % 2 === 1
       ? { findings: [{
         chunk: 0, question: 0, quote: result, finding: 'Incremental compilation shortened builds.',
         stance: 'supports', reason: 'The tool improved speed.', limitation: 'One controlled trial.',
@@ -74,7 +74,7 @@ test('source instructions stay in untrusted input and a contradicted finding is 
   assert.match(calls[0].messages[0].content, /untrusted data/);
   assert.ok(!calls[0].messages[0].content.includes(sourceInstruction));
   assert.ok(calls[0].messages[1].content.includes(sourceInstruction));
-  assert.equal(calls.length, 2);
+  assert.equal(calls.length, 4);
 });
 
 test('per-investigation estimates include reasoning and recorded retry usage', () => {

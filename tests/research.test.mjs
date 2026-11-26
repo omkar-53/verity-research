@@ -68,9 +68,9 @@ test('a transient OpenAlex outage retries and retains usable abstracts', async (
   assert.equal(works[0].abstract, 'Quality improved');
 });
 
-test('an abstaining report describes checked passages and provider gaps accurately', () => {
-  const session = { ...createPlan('Does pair programming improve code quality?'), example: false, summary: [], evidence: [], sources: [], analysis: { indexed: 8 }, warnings: ['OpenAlex was unavailable.'] };
-  assert.match(getSummary(session)[0].text, /8 source passages were checked/);
+test('an abstaining report describes reviewed passages and provider gaps accurately', () => {
+  const session = { ...createPlan('Does pair programming improve code quality?'), example: false, summary: [], evidence: [], sources: [], analysis: { indexed: 8, retrieved: [1, 2] }, warnings: ['OpenAlex was unavailable.'] };
+  assert.match(getSummary(session)[0].text, /8 source passages were indexed and 2 were reviewed/);
   assert.match(getSummary(session)[0].text, /coverage is incomplete/);
 });
 

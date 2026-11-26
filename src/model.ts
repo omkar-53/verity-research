@@ -209,7 +209,7 @@ export function getSummary(session: Session): Statement[] {
   }
   if (session.analysis?.indexed) {
     const incomplete = session.warnings.some((warning) => warning.includes('was unavailable'));
-    return [{ text: `${session.analysis.indexed} source passages were checked, but no finding passed citation review.${incomplete ? ' A scholarly search provider was unavailable, so coverage is incomplete.' : ' The available passages do not establish the claim.'}` }];
+    return [{ text: `${session.analysis.indexed} source passages were indexed and ${session.analysis.retrieved?.length ?? 0} were reviewed, but no finding passed citation review.${incomplete ? ' A scholarly search provider was unavailable, so coverage is incomplete.' : ' The available passages do not establish the claim.'}` }];
   }
   return [{ text: 'No usable source passages were retrieved. There is insufficient evidence to assess the claim.' }];
 }

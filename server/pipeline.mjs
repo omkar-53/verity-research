@@ -75,8 +75,7 @@ export function citationText(passage, finding, quote, claim) {
 export async function verifiedFindings(ai, plan, ranked) {
   const evidence = [];
   let proposed = 0;
-  for (let i = 0; i < ranked.length; i += 5) {
-    const batch = ranked.slice(i, i + 5);
+  async function reviewBatch(batch) {
     const result = await ai.analyze({
       claim: plan.claim,
       questions: plan.questions.map((text, index) => ({ index, text })),
@@ -88,7 +87,7 @@ export async function verifiedFindings(ai, plan, ranked) {
       const quote = citationText(batch[f.chunk].content, f.finding, f.quote.trim(), plan.claim);
       return quote ? [{ ...f, quote }] : [];
     });
-    if (!candidates.length) continue;
+    if (!candidates.length) return;
     const { accepted } = await ai.verify({
       claim: plan.claim,
       candidates: candidates.map((f, index) => ({
@@ -123,6 +122,14 @@ export async function verifiedFindings(ai, plan, ranked) {
       });
     }
   }
+  for (let i = 0; i < ranked.length; i += 5)
+    await reviewBatch(ranked.slice(i, i + 5));
+  // A dense multi-passage prompt can miss a direct result. Give the most
+  // relevant passages individual attention, while keeping the same quote
+  // matching and independent citation review gates.
+  if (!evidence.length)
+    for (const passage of ranked.slice(0, 3))
+      await reviewBatch([passage]);
   return { evidence, proposed };
 }
 
@@ -298,6 +305,8 @@ export async function pipeline({ db, jobId, plan, uploads, env, stage, ai = aiCl
   if (!evidence.length)
     warnings.push('No finding passed passage matching and citation review. The report abstains.');
   const summary = [];
+  if (!evidence.length)
+    summary.push({ text: `${archive.length} passages were indexed and ${ranked.length} were reviewed, but no proposed finding passed citation review. The available material does not establish the claim.` });
   if (evidence.length) {
     await stage('reading', 'Writing and verifying the cited report');
     const draft = await ai.synthesize({

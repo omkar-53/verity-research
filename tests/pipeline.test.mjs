@@ -39,6 +39,19 @@ test('verification drops rejected and unknown ids and deduplicates accepted quot
   assert.equal(result.evidence[0].aiVerified, true);
   assert.equal(result.evidence[0].reviewed, false);
 });
+test('a focused second pass can recover a directly quoted finding without bypassing review', async () => {
+  const calls = [];
+  const ai = {
+    analyze: async ({ passages }) => {
+      calls.push(passages.length);
+      return { findings: passages.length > 1 ? [] : [proposal] };
+    },
+    verify: async () => ({ accepted: [0] }),
+  };
+  const outcome = await verifiedFindings(ai, plan, [row, { ...row, id: 3, source_id: 'other' }]);
+  assert.deepEqual(calls, [2, 1, 1]);
+  assert.equal(outcome.evidence.length, 2);
+});
 test('chunking retains source locations across pages', () => {
   const chunks = chunksFor([1, 2].map((n) => ({ location: 'Page ' + n, text: quote })));
   assert.deepEqual(

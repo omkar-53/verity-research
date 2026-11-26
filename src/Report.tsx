@@ -301,7 +301,7 @@ function SourceDrawer({ source, evidence, close, showEvidence }: {
       {source.abstract && <section><h3>Retrieved abstract</h3><p>{source.abstract}</p></section>}
       {source.access === 'metadata' && <section><h3>Text availability</h3><p>Only bibliographic metadata was available for this source.</p></section>}
       <section><h3>Linked passages · {evidence.length}</h3>
-        {evidence.length === 0 && <p>No matching passages were extracted from this source.</p>}
+        {evidence.length === 0 && <p>No citation-verified finding links to this source.</p>}
         {evidence.map((item) => <button key={item.id} className="source-row inline-source" onClick={() => showEvidence(item.id)}>
           <span className="source-row-text"><strong>{item.title}</strong><span>{item.passage.location} · {stanceLabels[item.stance]}</span></span><ChevronRight size={16} />
         </button>)}
