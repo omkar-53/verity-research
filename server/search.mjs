@@ -208,7 +208,7 @@ export async function discover(query, env, providers = searchProviders) {
     throw Object.assign(new Error('Scholarly search is temporarily unavailable. Try again in a moment.'), { status: 502 });
   }
   const warnings = results.flatMap((result, index) => result.status === 'rejected'
-    ? [searches[index][0] + ' was unavailable.'] : []);
+    ? [searches[index][0] + ' was unavailable.' + (searches[index][0] === scholarProvider ? '' : ' ' + String(result.reason?.message || 'Request failed.').slice(0, 120))] : []);
   const groups = results.map((result) => result.status === 'fulfilled' ? result.value : []);
   const sources = mergeSources(groups);
   const dois = [...new Set(sources.filter((source) =>
